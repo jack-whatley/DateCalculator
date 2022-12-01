@@ -1,0 +1,27 @@
+﻿<Application x:Class="DateCalculator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DateCalculator"
+             xmlns:view="clr-namespace:DateCalculator.View"
+             xmlns:viewmodel="clr-namespace:DateCalculator.ViewModel"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/MenuButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/TextBoxTheme.xaml"/>
+                <ResourceDictionary Source="Theme/TitleBarTheme.xaml"/>
+                <ResourceDictionary Source="Theme/CalOutputTheme.xaml"/>
+                <ResourceDictionary Source="Theme/DayOutputTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">
+                <view:HomeView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodel:CalculatorViewModel}">
+                <view:CalculatorView/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
