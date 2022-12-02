@@ -36,11 +36,7 @@ namespace DayOfWeek.ViewModel
         /// <summary>
         /// Ask the Canexecute value to be recalculated.
         /// </summary>
-        public event EventHandler CanExecuteChanged
-        {
-           add { CommandManager.RequerySuggested += value; }
-           remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler CanExecuteChanged;
 
         /// <summary>
         /// 
@@ -59,6 +55,13 @@ namespace DayOfWeek.ViewModel
         public void Execute(object parameter)
         {
             execute(parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            EventHandler handler = CanExecuteChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
         }
     }
 }

@@ -3,6 +3,7 @@ using DayOfWeek.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -14,8 +15,7 @@ namespace DateCalculator.ViewModel
         public CalculatorViewModel()
         {
             DayList = new string[] {"1"};
-            ButtonState = false;
-            Submit = new RelayCommand(o => { DayOutput = YearInput + " " + (int.Parse(MonthInput) + 1).ToString() + " " + (int.Parse(DayInput) + 1).ToString(); });
+            Submit = new RelayCommand(CanSubmit, o => { DayOutput = YearInput + " " + (int.Parse(MonthInput) + 1).ToString() + " " + (int.Parse(DayInput) + 1).ToString(); });
         }
 
         private string[] _dayList; public string[] DayList
@@ -29,8 +29,6 @@ namespace DateCalculator.ViewModel
         }
 
         private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp;
-
-        private bool _buttonState;
         
         public string DayOutput
         {
@@ -58,15 +56,7 @@ namespace DateCalculator.ViewModel
             set
             {
                 _yearInp = value;
-                OnPropertyChanged(nameof(YearInput));
-                if (SanitiseYear())
-                {
-                    ButtonState = true;
-                }
-                else
-                {
-                    ButtonState = false;
-                }
+                OnYearChanged();
             }
         }
 
@@ -76,48 +66,7 @@ namespace DateCalculator.ViewModel
             set
             {
                 _monthInp = value;
-                OnPropertyChanged(nameof(MonthInput));
-                // method for updating selectable days
-                var Program = new Program();
-                switch (MonthInput)
-                {
-                    case "0": // jan
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "1": // feb
-                        DayList = Program.GetRange(28);
-                        break;
-                    case "2": // mar
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "3": // apr
-                        DayList = Program.GetRange(30);
-                        break;
-                    case "4": // may
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "5": // jun
-                        DayList = Program.GetRange(30);
-                        break;
-                    case "6": // jul
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "7": // aug
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "8": // sep
-                        DayList = Program.GetRange(30);
-                        break;
-                    case "9": // oct
-                        DayList = Program.GetRange(31);
-                        break;
-                    case "10": // nov
-                        DayList = Program.GetRange(30);
-                        break;
-                    case "11": // dec
-                        DayList = Program.GetRange(31);
-                        break;
-                }
+                OnMonthChanged();
             }
         }
 
@@ -127,38 +76,78 @@ namespace DateCalculator.ViewModel
             set
             {
                 _dayInp = value;
-                OnPropertyChanged(nameof(DayInput));
+                OnDayChanged();
             }
         }
 
-        public bool ButtonState
+        private void OnYearChanged() { OnPropertyChanged(nameof(_yearInp)); Submit.RaiseCanExecuteChanged(); }
+
+        private void OnMonthChanged()
         {
-            get { return _buttonState; }
-            set
+            OnPropertyChanged(nameof(_monthInp));
+            // method for updating selectable days
+            Submit.RaiseCanExecuteChanged();
+            var Program = new Program();
+            switch (MonthInput)
             {
-                _buttonState = value;
-                OnPropertyChanged(nameof(ButtonState));
-                OnPropertyChanged(nameof(YearInput));
+                case "0": // jan
+                    DayList = Program.GetRange(31);
+                    break;
+                case "1": // feb
+                    DayList = Program.GetRange(28);
+                    break;
+                case "2": // mar
+                    DayList = Program.GetRange(31);
+                    break;
+                case "3": // apr
+                    DayList = Program.GetRange(30);
+                    break;
+                case "4": // may
+                    DayList = Program.GetRange(31);
+                    break;
+                case "5": // jun
+                    DayList = Program.GetRange(30);
+                    break;
+                case "6": // jul
+                    DayList = Program.GetRange(31);
+                    break;
+                case "7": // aug
+                    DayList = Program.GetRange(31);
+                    break;
+                case "8": // sep
+                    DayList = Program.GetRange(30);
+                    break;
+                case "9": // oct
+                    DayList = Program.GetRange(31);
+                    break;
+                case "10": // nov
+                    DayList = Program.GetRange(30);
+                    break;
+                case "11": // dec
+                    DayList = Program.GetRange(31);
+                    break;
             }
-
         }
+
+        private void OnDayChanged() { OnPropertyChanged(nameof(_dayInp)); Submit.RaiseCanExecuteChanged(); }
 
         public RelayCommand Submit { get; set; }
 
-        private bool SanitiseYear()
+        public bool CanSubmit(object obj)
         {
             var Program = new InputSanitisationAlgorithms();
 
-            if (!string.IsNullOrEmpty(YearInput))
+            if (!string.IsNullOrEmpty(YearInput) && Program.SanitiseYear(YearInput))
             {
-                if (Program.SanitiseYear(YearInput))
+                if (!string.IsNullOrEmpty(MonthInput) && Program.SanitiseMonth(MonthInput))
                 {
-                    return true;
+                    if (!string.IsNullOrEmpty(DayInput))
+                    {
+                        return true;
+                    }
+                    else { return false; }
                 }
-                else
-                {
-                    return false;
-                }
+                else { return false; }
             }
             else
             {
@@ -170,14 +159,50 @@ namespace DateCalculator.ViewModel
     class InputSanitisationAlgorithms
     {
         public InputSanitisationAlgorithms() { }
+
         public bool SanitiseYear(string year)
         {
-            int v = int.Parse(year);
-            if (v > 9999 && v < 9999)
+            int.TryParse(year, out int v);
+            if (v > 1752 && v < 9999) // only gregor for now
             {
                 return true;
             }
             return false;
+        }
+
+        public bool SanitiseMonth(string month)
+        { 
+            int.TryParse(month, out int monthConverted);
+
+            monthConverted++;
+
+            if (monthConverted > 0 && monthConverted < 13)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool GetLeapYear(string year)
+        {
+            int.TryParse(year, out int yearConverted);
+
+            if (yearConverted % 4 == 0)
+            {
+                return true;
+            }
+            else if (yearConverted % 400 == 0)
+            {
+                return true;
+            }
+            else if (yearConverted % 100 == 0)
+            {
+                return false;
+            }
+            else { return false; }
         }
     }
 }

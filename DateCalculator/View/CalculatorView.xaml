@@ -59,7 +59,7 @@
                         <TextBox Height="25"
                                  TextAlignment="Left"
                                  VerticalContentAlignment="Center"
-                                 Text="{Binding YearInput}"/>
+                                 Text="{Binding YearInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <StackPanel Margin="10"
@@ -69,7 +69,7 @@
                                    Foreground="White"/>
                         <ComboBox HorizontalAlignment="Stretch"
                                   Height="25"
-                                  SelectedIndex="{Binding MonthInput}">
+                                  SelectedIndex="{Binding MonthInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <ComboBoxItem Content="January" />
                             <ComboBoxItem Content="February" />
                             <ComboBoxItem Content="March" />
@@ -105,8 +105,9 @@
                                    Foreground="#282828"/>
                         <Button Height="25"
                                 Content="Submit"
-                                Command="{Binding Submit}"
-                                IsEnabled="{Binding ButtonState}"/>
+                                Command="{Binding Submit}"/>
+
+                        <!--IsEnabled="{Binding ButtonState}"-->
                     </StackPanel>
                 </Grid>
 
