@@ -15,7 +15,7 @@ namespace DateCalculator.ViewModel
         public CalculatorViewModel()
         {
             DayList = new string[] {"1"};
-            Submit = new RelayCommand(CanSubmit, o => { DayOutput = YearInput + " " + (int.Parse(MonthInput) + 1).ToString() + " " + (int.Parse(DayInput) + 1).ToString(); });
+            Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
         private string[] _dayList; public string[] DayList
@@ -169,6 +169,23 @@ namespace DateCalculator.ViewModel
             else
             {
                 return false;
+            }
+        }
+
+        public void ExecuteSubmit(object obj)
+        {
+            var Program = new Program();
+
+            int ProgramResult = Program.GetDayOfWeek(YearInput, MonthInput, DayInput);
+
+            switch (ProgramResult)
+            {
+                case 0:
+                    DayOutput = "Sunday";
+                    break;
+                case 1:
+                    DayOutput = "Monday";
+                    break;
             }
         }
     }
