@@ -186,6 +186,21 @@ namespace DateCalculator.ViewModel
                 case 1:
                     DayOutput = "Monday";
                     break;
+                case 2:
+                    DayOutput = "Tuesday";
+                    break;
+                case 3:
+                    DayOutput = "Wednesday";
+                    break;
+                case 4:
+                    DayOutput = "Thursday";
+                    break;
+                case 5:
+                    DayOutput = "Friday";
+                    break;
+                case 6:
+                    DayOutput = "Saturday";
+                    break;
             }
         }
     }

@@ -14,9 +14,11 @@
                                     CornerRadius="10">
                                 <Grid>
                                     <TextBlock Text="Day: "
-                                               HorizontalAlignment="Left"/>
+                                               HorizontalAlignment="Left"
+                                               Margin="2,0,0,0"/>
                                     <TextBlock Text="{TemplateBinding Property=Content}"
-                                               HorizontalAlignment="Right"/>
+                                               HorizontalAlignment="Right"
+                                               Margin="0,0,2,0"/>
                                 </Grid>
                             </Border>
                         </Grid>
