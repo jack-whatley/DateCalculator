@@ -93,9 +93,7 @@ namespace DateCalculator.Model
             decimal result = DayParsed + Math.Truncate((13 * (MonthCode - 1)) / 5) + LastDigits + 
                 Math.Truncate(LastDigits / 4) + Math.Truncate(FirstDigits / 4) - (2 * FirstDigits);
 
-            int FinalResult = Convert.ToInt32(Math.Truncate(result));
-
-            FinalResult = (int)(7 * Math.Truncate(result / 7));
+            int FinalResult = Convert.ToInt32(Math.Truncate(result)) % 7;
 
             return FinalResult;
         }
