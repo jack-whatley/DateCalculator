@@ -181,8 +181,11 @@ namespace DateCalculator.ViewModel
         public void ExecuteSubmit(object obj)
         {
             var Program = new Program();
+            var InputAlgo = new InputSanitisationAlgorithms();
 
             int ProgramResult = Program.GetDayOfWeekGregorian(YearInput, MonthInput, DayInput);
+
+            if (InputAlgo.GetCalendarType(YearInput, MonthInput, DayInput)) { };
 
             switch (ProgramResult)
             {
@@ -244,6 +247,8 @@ namespace DateCalculator.ViewModel
         public bool SanitiseDay(string day)
         {
             int.TryParse(day, out int DayParsed);
+
+            DayParsed++;
 
             if (DayParsed > 0 && DayParsed < 32)
             {

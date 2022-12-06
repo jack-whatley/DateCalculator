@@ -29,6 +29,9 @@ namespace DateCalculator.Model
 
         public int GetDayOfWeekGregorian(string year, string month, string day)
         {
+            // TODO: Fix for September 1752
+            // Works for everything else.
+
             int[] days = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
             
             int.TryParse(year, out int YearParsed);
