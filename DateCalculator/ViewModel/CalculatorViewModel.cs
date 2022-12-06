@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
@@ -18,7 +19,7 @@ namespace DateCalculator.ViewModel
             Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
-        private string[] _dayList; public string[] DayList
+        private IEnumerable<string> _dayList; public IEnumerable<string> DayList
         {
             get { return _dayList; }
             set
@@ -135,7 +136,15 @@ namespace DateCalculator.ViewModel
                         DayList = Program.GetRange(31);
                         break;
                     case "8": // sep
-                        DayList = Program.GetRange(30);
+                        if (YearInput == "1752")
+                        {
+                            List<string> SpecialCase = new List<string> { "1", "2", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
+                            DayList = SpecialCase;
+                        }
+                        else
+                        {
+                            DayList = Program.GetRange(30);
+                        }
                         break;
                     case "9": // oct
                         DayList = Program.GetRange(31);
@@ -162,21 +171,18 @@ namespace DateCalculator.ViewModel
                     {
                         return true;
                     }
-                    else { return false; }
+                    else return false;
                 }
-                else { return false; }
+                else return false;
             }
-            else
-            {
-                return false;
-            }
+            else return false;
         }
 
         public void ExecuteSubmit(object obj)
         {
             var Program = new Program();
 
-            int ProgramResult = Program.GetDayOfWeek(YearInput, MonthInput, DayInput);
+            int ProgramResult = Program.GetDayOfWeekGregorian(YearInput, MonthInput, DayInput);
 
             switch (ProgramResult)
             {
@@ -211,8 +217,8 @@ namespace DateCalculator.ViewModel
 
         public bool SanitiseYear(string year)
         {
-            int.TryParse(year, out int v);
-            if (v > 1752 && v < 9999) // only gregor for now
+            int.TryParse(year, out int YearParsed);
+            if (YearParsed >= 1752 && YearParsed < 9999) // only gregor for now
             {
                 return true;
             }
@@ -220,12 +226,12 @@ namespace DateCalculator.ViewModel
         }
 
         public bool SanitiseMonth(string month)
-        { 
-            int.TryParse(month, out int monthConverted);
+        {
+            int.TryParse(month, out int MonthParsed);
 
-            monthConverted++;
+            MonthParsed++;
 
-            if (monthConverted > 0 && monthConverted < 13)
+            if (MonthParsed > 0 && MonthParsed < 13)
             {
                 return true;
             }
@@ -237,16 +243,13 @@ namespace DateCalculator.ViewModel
 
         public bool SanitiseDay(string day)
         {
-            int.TryParse(day, out int dayConverted);
+            int.TryParse(day, out int DayParsed);
 
-            if (dayConverted > 0)
+            if (DayParsed > 0 && DayParsed < 32)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            else return false;
         }
 
         public bool GetLeapYear(string year)
@@ -265,7 +268,49 @@ namespace DateCalculator.ViewModel
             {
                 return false;
             }
-            else { return false; }
+            else return false;
+        }
+
+        public bool GetCalendarType(string year, string month, string day)
+        {
+            /// <summary>
+            /// Returns true if the calendar type is Gregorian and false for Julian.
+            /// </summary>
+
+            int.TryParse(year, out int YearParsed);
+            int.TryParse(month, out int MonthParsed);
+            int.TryParse(day, out int DayParsed);
+
+            if (YearParsed > 1752)
+            {
+                return true;
+            }
+            else if (YearParsed == 1752)
+            {
+                if (MonthParsed < 9) // before september = julian
+                {
+                    return false;
+                }
+                else if (MonthParsed == 9)
+                {
+                    if (DayParsed < 2)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
