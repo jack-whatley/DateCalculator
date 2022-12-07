@@ -24,7 +24,7 @@ namespace DateCalculator.Model
         }
 
         /// <summary>
-        /// Tomohiko Sakamoto Algorithm for Gregorian
+        /// Tomohiko Sakamoto Algorithm for Gregorian and Zellers Congruence for Julian.
         /// </summary>
 
         public int GetDayOfWeekGregorian(string year, string month, string day)
@@ -40,6 +40,7 @@ namespace DateCalculator.Model
 
             MonthParsed++; DayParsed++;
             if (MonthParsed < 3) YearParsed--;
+            if (YearParsed == 1752 && MonthParsed == 9 && DayParsed >= 3) DayParsed += 11; // fix for sept 1752
 
             int result = (YearParsed + YearParsed / 4 - YearParsed / 100 + YearParsed / 400 + days[MonthParsed - 1] + DayParsed) % 7;
 
@@ -48,8 +49,15 @@ namespace DateCalculator.Model
 
         public int GetDayofWeekJulian(string year, string month, string day)
         {
+            // TODO: Find method for calculating date for Julian.
 
-            return 1;
+            int.TryParse(year, out int YearParsed);
+            int.TryParse(month, out int MonthParsed);
+            int.TryParse(day, out int DayParsed);
+
+            // https://www.geeksforgeeks.org/zellers-congruence-find-day-date/#:~:text=Zeller%E2%80%99s%20congruence%20is%20an%20algorithm%20devised%20by%20Christian,the%20day%20of%20the%20week%20for%20any%20date.
+
+            return -1;
         }
     }
 }

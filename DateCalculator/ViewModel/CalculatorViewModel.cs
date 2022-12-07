@@ -183,9 +183,18 @@ namespace DateCalculator.ViewModel
             var Program = new Program();
             var InputAlgo = new InputSanitisationAlgorithms();
 
-            int ProgramResult = Program.GetDayOfWeekGregorian(YearInput, MonthInput, DayInput);
+            int ProgramResult;
 
-            if (InputAlgo.GetCalendarType(YearInput, MonthInput, DayInput)) { };
+            if (InputAlgo.GetCalendarType(YearInput, MonthInput, DayInput))
+            {
+                ProgramResult = Program.GetDayOfWeekGregorian(YearInput, MonthInput, DayInput);
+                CalOutput = "Gregorian";
+            }
+            else
+            {
+                ProgramResult = Program.GetDayofWeekJulian(YearInput, MonthInput, DayInput);
+                CalOutput = "Julian";
+            }
 
             switch (ProgramResult)
             {
@@ -210,6 +219,9 @@ namespace DateCalculator.ViewModel
                 case 6:
                     DayOutput = "Saturday";
                     break;
+                default:
+                    DayOutput = "Fail";
+                    break;
             }
         }
     }
@@ -221,7 +233,7 @@ namespace DateCalculator.ViewModel
         public bool SanitiseYear(string year)
         {
             int.TryParse(year, out int YearParsed);
-            if (YearParsed >= 1752 && YearParsed < 9999) // only gregor for now
+            if (YearParsed > 0 && YearParsed <= 9999)
             {
                 return true;
             }
@@ -286,6 +298,9 @@ namespace DateCalculator.ViewModel
             int.TryParse(month, out int MonthParsed);
             int.TryParse(day, out int DayParsed);
 
+            // Index for dropdowns starts from zero.
+            DayParsed++; MonthParsed++;
+
             if (YearParsed > 1752)
             {
                 return true;
@@ -298,13 +313,22 @@ namespace DateCalculator.ViewModel
                 }
                 else if (MonthParsed == 9)
                 {
-                    if (DayParsed < 2)
+                    if (DayParsed <= 2)
                     {
                         return false;
                     }
+                    else if (DayParsed >= 3)
+                    {
+                        DayParsed += 11;
+                        if (DayParsed > 13)
+                        {
+                            return true;
+                        }
+                        else return false;
+                    }
                     else
                     {
-                        return true;
+                        return false;
                     }
                 }
                 else
