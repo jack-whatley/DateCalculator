@@ -29,9 +29,6 @@ namespace DateCalculator.Model
 
         public int GetDayOfWeekGregorian(string year, string month, string day)
         {
-            // TODO: Fix for September 1752
-            // Works for everything else.
-
             int[] days = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
             
             int.TryParse(year, out int YearParsed);
@@ -50,14 +47,20 @@ namespace DateCalculator.Model
         public int GetDayofWeekJulian(string year, string month, string day)
         {
             // TODO: Find method for calculating date for Julian.
+            // https://en.wikipedia.org/wiki/Zeller%27s_congruence
 
             int.TryParse(year, out int YearParsed);
             int.TryParse(month, out int MonthParsed);
             int.TryParse(day, out int DayParsed);
 
-            // https://www.geeksforgeeks.org/zellers-congruence-find-day-date/#:~:text=Zeller%E2%80%99s%20congruence%20is%20an%20algorithm%20devised%20by%20Christian,the%20day%20of%20the%20week%20for%20any%20date.
+            MonthParsed++; DayParsed++;
 
-            return -1;
+            if (MonthParsed < 3) MonthParsed += 12; // for jan/feb it is month 13/14
+            int Y = YearParsed - 1;
+
+            int result = (DayParsed + (13 * (MonthParsed - 2) / 5) + 2 + Y + Y / 4 + 5) % 7; // sunday is 0 version
+
+            return result;
         }
     }
 }

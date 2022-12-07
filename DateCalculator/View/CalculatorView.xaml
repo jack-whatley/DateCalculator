@@ -106,8 +106,6 @@
                         <Button Height="25"
                                 Content="Submit"
                                 Command="{Binding Submit}"/>
-
-                        <!--IsEnabled="{Binding ButtonState}"-->
                     </StackPanel>
                 </Grid>
 
@@ -129,6 +127,7 @@
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
 
@@ -144,13 +143,21 @@
                            Margin="10,0,0,0"/>
 
                 <StackPanel Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Margin="10">
+                    <RadioButton Style="{StaticResource InputOutputTheme}"
+                                 Content="{Binding InputOutput}"
+                                 IsEnabled="False"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2"
                             Margin="10">
                     <RadioButton Style="{StaticResource CalOutputTheme}"
                                  Content="{Binding CalOutput}"
                                  IsEnabled="False"/>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="2"
                             Grid.Column="1"
                             Margin="10">
                     <RadioButton Style="{StaticResource DayOutputTheme}"

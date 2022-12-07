@@ -29,8 +29,18 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp;
+        private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut;
         
+        public string InputOutput
+        {
+            get { return _inpOut; }
+            set
+            {
+                _inpOut = value;
+                OnPropertyChanged(nameof(InputOutput));
+            }
+        }
+
         public string DayOutput
         {
             get { return _dayOut; }
@@ -81,7 +91,12 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private void OnYearChanged() { OnPropertyChanged(nameof(_yearInp)); Submit.RaiseCanExecuteChanged(); SetDayList(); }
+        private void OnYearChanged()
+        { 
+            OnPropertyChanged(nameof(_yearInp)); 
+            Submit.RaiseCanExecuteChanged();
+            SetDayList(); 
+        }
 
         private void OnMonthChanged()
         {
@@ -91,7 +106,11 @@ namespace DateCalculator.ViewModel
             SetDayList();
         }
 
-        private void OnDayChanged() { OnPropertyChanged(nameof(_dayInp)); Submit.RaiseCanExecuteChanged(); }
+        private void OnDayChanged()
+        { 
+            OnPropertyChanged(nameof(_dayInp)); 
+            Submit.RaiseCanExecuteChanged(); 
+        }
 
         public RelayCommand Submit { get; set; }
 
@@ -223,6 +242,8 @@ namespace DateCalculator.ViewModel
                     DayOutput = "Fail";
                     break;
             }
+
+            InputOutput = $"{DayInput} / {MonthInput} / {YearInput}";
         }
     }
 
