@@ -46,7 +46,7 @@ namespace DateCalculator.Model
 
         public int GetDayofWeekJulian(string year, string month, string day)
         {
-            // TODO: Find method for calculating date for Julian.
+            // Method for calculating Julian.
             // https://en.wikipedia.org/wiki/Zeller%27s_congruence
 
             int.TryParse(year, out int YearParsed);

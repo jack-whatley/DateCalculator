@@ -104,15 +104,16 @@
                                    Margin="0,5,0,0"
                                    Foreground="#282828"/>
                         <Button Height="25"
-                                Content="Submit"
+                                Content="{Binding ButtonText}"
                                 Command="{Binding Submit}"/>
                     </StackPanel>
                 </Grid>
 
                 <TextBlock Grid.Row="2" 
-                           Text="Placeholder text talking about how to use."
+                           Text="To use the calculator input a year between 1AD and 9999AD, then use the menus to select a month and date. The calculator can handle both the Gregorian and Julian calendars including the UK's switch between them in September 1752 when all the days between the 2nd and 14th were lost."
                            Foreground="White"
-                           Margin="10"/>
+                           Margin="10"
+                           TextWrapping="Wrap"/>
 
             </Grid>
 

@@ -16,6 +16,7 @@ namespace DateCalculator.ViewModel
         public CalculatorViewModel()
         {
             DayList = new string[] {"1"};
+            ButtonText = "Submit";
             Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
@@ -29,8 +30,18 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut;
+        private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut, _butText;
         
+        public string ButtonText
+        {
+            get { return _butText; }
+            set
+            {
+                _butText = value;
+                OnPropertyChanged(nameof(ButtonText));
+            }
+        }
+
         public string InputOutput
         {
             get { return _inpOut; }
@@ -93,14 +104,14 @@ namespace DateCalculator.ViewModel
 
         private void OnYearChanged()
         { 
-            OnPropertyChanged(nameof(_yearInp)); 
+            OnPropertyChanged(nameof(YearInput)); 
             Submit.RaiseCanExecuteChanged();
             SetDayList(); 
         }
 
         private void OnMonthChanged()
         {
-            OnPropertyChanged(nameof(_monthInp));
+            OnPropertyChanged(nameof(MonthInput));
             // method for updating selectable days
             Submit.RaiseCanExecuteChanged();
             SetDayList();
@@ -108,7 +119,7 @@ namespace DateCalculator.ViewModel
 
         private void OnDayChanged()
         { 
-            OnPropertyChanged(nameof(_dayInp)); 
+            OnPropertyChanged(nameof(DayInput)); 
             Submit.RaiseCanExecuteChanged(); 
         }
 
@@ -180,6 +191,8 @@ namespace DateCalculator.ViewModel
 
         public bool CanSubmit(object obj)
         {
+            if (ButtonText == "Clear") return true;
+
             var Program = new InputSanitisationAlgorithms();
 
             if (!string.IsNullOrEmpty(YearInput) && Program.SanitiseYear(YearInput))
@@ -198,6 +211,20 @@ namespace DateCalculator.ViewModel
         }
 
         public void ExecuteSubmit(object obj)
+        {
+            if (ButtonText == "Submit")
+            {
+                SubmitCalendar();
+                ButtonText = "Clear";
+            }
+            else
+            {
+                SubmitClear();
+                ButtonText = "Submit";
+            }
+        }
+
+        public void SubmitCalendar()
         {
             var Program = new Program();
             var InputAlgo = new InputSanitisationAlgorithms();
@@ -243,7 +270,25 @@ namespace DateCalculator.ViewModel
                     break;
             }
 
-            InputOutput = $"{DayInput} / {MonthInput} / {YearInput}";
+            // 1752 is special case due to index method for month and day
+            // month and day are -1 due to array starting at 0
+            // +11 for jump to 14th sept from 2nd
+            if (YearInput == "1752" && MonthInput == "8" && int.Parse(DayInput) >= 2)
+            {
+                InputOutput = $"{int.Parse(DayInput) + 12} / {int.Parse(MonthInput) + 1} / {YearInput}";
+            }
+            else InputOutput = $"{int.Parse(DayInput) + 1} / {int.Parse(MonthInput) + 1} / {YearInput}";
+        }
+
+        public void SubmitClear()
+        {
+            YearInput = "";
+            MonthInput = "-1";
+            DayInput = "-1";
+
+            DayOutput = "";
+            InputOutput = "";
+            CalOutput = "";
         }
     }
 
