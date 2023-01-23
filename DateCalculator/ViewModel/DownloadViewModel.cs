@@ -16,9 +16,9 @@ namespace DateCalculator.ViewModel
 
         public void DownloadVideo(object obj)
         {
-            string YTDL = @"/C C:\Users\the-c\Desktop\youtube-downloader\youtube-dl.exe";
-            string args = "https://youtu.be/BoCx1MvfcUU";
-            string command = $"{YTDL} --help"; // {args}
+            string YTDL = "/C C:/Users/the-c/Desktop/youtube-downloader/youtube-dl.exe";
+            string args = "https://youtu.be/REU8pMbh23I";
+            string command = $"{YTDL} -o ~/Desktop/%(title)s.%(ext)s {args}"; // {args} or --help
 
             ProcessStartInfo psi = new ProcessStartInfo("cmd", "/c" + command);
 
