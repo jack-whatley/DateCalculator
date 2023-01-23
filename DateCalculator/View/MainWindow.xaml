@@ -119,7 +119,7 @@
                              FontSize="14" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding CalculatorViewCommand}"/>
-                <RadioButton Content="YT Downloader"
+                <RadioButton Content="Video Downloader"
                              Height="50"
                              Foreground="White"
                              FontSize="14"
