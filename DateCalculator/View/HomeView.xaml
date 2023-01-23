@@ -18,7 +18,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="How To Use"
+        <TextBlock Text="Program Layout"
                        Foreground="White"
                        FontSize="28"
                        HorizontalAlignment="Left"

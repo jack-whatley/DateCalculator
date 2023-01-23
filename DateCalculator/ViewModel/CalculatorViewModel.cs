@@ -1,5 +1,5 @@
 ﻿using DateCalculator.Model;
-using DayOfWeek.ViewModel;
+using DateCalculator.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

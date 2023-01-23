@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DayOfWeek.ViewModel
+namespace DateCalculator.ViewModel
 {
     /// <summary>
     /// Facilitates relaying commands between views and viewmodels

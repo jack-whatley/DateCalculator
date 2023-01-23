@@ -8,6 +8,10 @@ namespace DateCalculator.Model
 {
     public class Program
     {
+        /// <summary>
+        /// Tomohiko Sakamoto Algorithm for Gregorian and Zellers Congruence for Julian.
+        /// </summary>
+
         public Program() { }
 
         public string[] GetRange(int NumDays)
@@ -22,10 +26,6 @@ namespace DateCalculator.Model
 
             return ArrayFinal;
         }
-
-        /// <summary>
-        /// Tomohiko Sakamoto Algorithm for Gregorian and Zellers Congruence for Julian.
-        /// </summary>
 
         public int GetDayOfWeekGregorian(string year, string month, string day)
         {

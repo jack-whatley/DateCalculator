@@ -36,7 +36,7 @@
 
             <Border Background="#282828"
                     CornerRadius="10,0,0,0">
-                <TextBlock Text="Date Calculator"
+                <TextBlock Text="C# Learning Project"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"
                        Foreground="White"
@@ -119,6 +119,12 @@
                              FontSize="14" 
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding CalculatorViewCommand}"/>
+                <RadioButton Content="YT Downloader"
+                             Height="50"
+                             Foreground="White"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding DownloadViewCommand}"/>
             </StackPanel>
 
             <ContentControl Grid.Row="3"
