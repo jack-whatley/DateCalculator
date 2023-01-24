@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace DateCalculator.ViewModel
@@ -12,30 +13,55 @@ namespace DateCalculator.ViewModel
             ButtonPress = new RelayCommand(DownloadVideo);
         }
 
+        private string _logTxt;
+
+        public string LogText
+        {
+            get { return _logTxt; }
+            set
+            {
+                _logTxt = value;
+                OnPropertyChanged(nameof(LogText));
+            }
+        }
+
         public RelayCommand ButtonPress { get; set; }
 
+        // download video function
         public void DownloadVideo(object obj)
         {
             string YTDL = "/C C:/Users/the-c/Desktop/youtube-downloader/youtube-dl.exe";
             string args = "https://youtu.be/REU8pMbh23I";
-            string command = $"{YTDL} -o ~/Desktop/%(title)s.%(ext)s {args}"; // {args} or --help
+            string path = "~/Desktop";
+            string save = $"-o {path}/%(title)s.%(ext)s";
+            string command = $"{YTDL} {save} {args}"; // {args} or --help
 
-            ProcessStartInfo psi = new ProcessStartInfo("cmd", "/c" + command);
-
-            try
+            // laying out cmd process
+            Process CMD = new Process
             {
-                System.Diagnostics.Process.Start("cmd.exe", command);
-                /*using(Process process = new Process())
+                StartInfo = new ProcessStartInfo
                 {
-                    process.StartInfo = psi;
-                    process.Start();
+                    FileName = "CMD.exe",
+                    Arguments = command,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                }
+            };
 
-                    process.WaitForExit();
-                }*/
-            }
-            catch
+            // running and closing process
+            CMD.Start();
+            CMD.WaitForExit();
+
+            LogText += "\n[console] ytdl activated";
+
+            // outputting results
+            while (!CMD.StandardOutput.EndOfStream)
             {
-                Debug.WriteLine("ytdl failed");
+                string line = CMD.StandardOutput.ReadLine();
+                Debug.WriteLine(line);
+                LogText += $"\n{line}";
             }
         }
     }

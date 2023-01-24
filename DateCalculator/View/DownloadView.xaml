@@ -38,7 +38,30 @@
                 CornerRadius="10"
                 Margin="0,5,10,10"
                 Grid.Row="2">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
 
+                <TextBlock Text="Log Output"
+                           Foreground="White"
+                           FontSize="18"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+
+                <ScrollViewer Grid.Row="1"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto"
+                              Margin="10"
+                              Padding="5"
+                              Background="Black">
+
+                    <TextBlock Text="{Binding LogText}"
+                               Foreground="White"/>
+                </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
