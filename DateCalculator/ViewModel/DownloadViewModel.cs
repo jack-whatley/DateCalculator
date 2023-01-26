@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace DateCalculator.ViewModel
 {
@@ -44,24 +45,37 @@ namespace DateCalculator.ViewModel
                     FileName = "CMD.exe",
                     Arguments = command,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     WindowStyle = ProcessWindowStyle.Hidden,
                 }
             };
 
-            // running and closing process
-            CMD.Start();
-            CMD.WaitForExit();
-
-            LogText += "\n[console] ytdl activated";
-
-            // outputting results
-            while (!CMD.StandardOutput.EndOfStream)
+            try
             {
-                string line = CMD.StandardOutput.ReadLine();
-                Debug.WriteLine(line);
-                LogText += $"\n{line}";
+                // running and closing process
+                CMD.Start();
+                CMD.WaitForExit();
+
+                LogText += "[console] ytdl activated";
+
+                // outputting results
+                while (!CMD.StandardOutput.EndOfStream)
+                {
+                    string line = CMD.StandardOutput.ReadLine();
+                    LogText += $"\n{line}";
+                }
+
+                while (!CMD.StandardError.EndOfStream)
+                {
+                    string ErrorLine = CMD.StandardError.ReadLine();
+                    LogText += $"\n{ErrorLine}";
+                }
+            }
+            catch
+            {
+                LogText += "[console] ytdl error";
             }
         }
     }

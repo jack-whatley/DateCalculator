@@ -28,10 +28,50 @@
                 CornerRadius="10"
                 Margin="0,0,10,5"
                 Grid.Row="1">
-            <Button Content="Test Download"
-                    Width="100"
-                    Height="30"
-                    Command="{Binding ButtonPress}"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Video Downloader"
+                           Foreground="White"
+                           FontSize="18"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"/>
+
+                <Grid Grid.Row="1"
+                      Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Youtube Link"
+                               Foreground="White"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- ytdl use box -->
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <!-- ytdl status box -->
+                </Grid>
+
+                <!--<Button Content="Test Download"
+                        Width="100"
+                        Height="30"
+                        Command="{Binding ButtonPress}"
+                        Grid.Row="1"/>-->
+            </Grid>
         </Border>
 
         <Border Background="#282828"
@@ -52,12 +92,13 @@
                            Margin="10,0,0,0"/>
 
                 <ScrollViewer Grid.Row="1"
-                              HorizontalScrollBarVisibility="Disabled"
+                              HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto"
-                              Margin="10"
+                              Margin="10,0,10,10"
                               Padding="5"
                               Background="Black">
 
+                    <!-- {Binding LogText}  -->
                     <TextBlock Text="{Binding LogText}"
                                Foreground="White"/>
                 </ScrollViewer>
