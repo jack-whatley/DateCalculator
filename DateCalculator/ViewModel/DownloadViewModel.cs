@@ -1,9 +1,14 @@
-﻿using System;
+﻿using DateCalculator.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading;
+using System.Xml;
 
 namespace DateCalculator.ViewModel
 {
@@ -11,7 +16,7 @@ namespace DateCalculator.ViewModel
     {
         public DownloadViewModel() 
         {
-            ButtonPress = new RelayCommand(DownloadVideo);
+            ButtonPress = new RelayCommand(CreateSettings);
         }
 
         private string _logTxt;
@@ -28,14 +33,57 @@ namespace DateCalculator.ViewModel
 
         public RelayCommand ButtonPress { get; set; }
 
+        public void CreateSettings(object obj)
+        {
+            try
+            {
+                // creating settings txt
+                string FileName = @"C:\jwapp\settings.json";
+                
+                // creating directory for app
+                /*if (Directory.Exists("C:\\jwapp"))
+                {
+                    return;
+                }
+                else
+                {
+                    Directory.CreateDirectory("C:\\jwapp");
+                }
+
+                if (File.Exists(FileName))
+                {
+                    return;
+                }
+                else
+                {
+                    var file = File.Create(FileName);
+                }
+
+                File.Create(FileName);*/
+
+                var settings = new Data()
+                {
+                    ytdl_status = false,
+                };
+
+                var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(FileName, json);
+            }
+            catch
+            {
+                LogText += "\n[console] directory already exists or error";
+            }
+            
+        }
+
         // download video function
         public void DownloadVideo(object obj)
         {
             string YTDL = "/C C:/Users/the-c/Desktop/youtube-downloader/youtube-dl.exe";
-            string args = "https://youtu.be/REU8pMbh23I";
+            string link = "https://youtu.be/REU8pMbh23I";
             string path = "~/Desktop";
             string save = $"-o {path}/%(title)s.%(ext)s";
-            string command = $"{YTDL} {save} {args}"; // {args} or --help
+            string command = $"{YTDL} {save} {link}"; // {args} or --help
 
             // laying out cmd process
             Process CMD = new Process
@@ -63,8 +111,8 @@ namespace DateCalculator.ViewModel
                 // outputting results
                 while (!CMD.StandardOutput.EndOfStream)
                 {
-                    string line = CMD.StandardOutput.ReadLine();
-                    LogText += $"\n{line}";
+                    string Line = CMD.StandardOutput.ReadLine();
+                    LogText += $"\n{Line}";
                 }
 
                 while (!CMD.StandardError.EndOfStream)

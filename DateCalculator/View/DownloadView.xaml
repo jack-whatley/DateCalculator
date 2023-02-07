@@ -66,11 +66,11 @@
                     <!-- ytdl status box -->
                 </Grid>
 
-                <!--<Button Content="Test Download"
+                <Button Content="Test Directory + JSON"
                         Width="100"
                         Height="30"
                         Command="{Binding ButtonPress}"
-                        Grid.Row="1"/>-->
+                        Grid.Row="1"/>
             </Grid>
         </Border>
 

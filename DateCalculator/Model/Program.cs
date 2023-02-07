@@ -63,4 +63,9 @@ namespace DateCalculator.Model
             return result;
         }
     }
+
+    public class Data
+    {
+        public bool ytdl_status { get; set; }
+    }
 }
