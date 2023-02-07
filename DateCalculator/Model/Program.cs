@@ -67,5 +67,7 @@ namespace DateCalculator.Model
     public class Data
     {
         public bool ytdl_status { get; set; }
+        public string ytdl_path { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 
@@ -17,6 +18,7 @@ namespace DateCalculator.ViewModel
         public DownloadViewModel() 
         {
             ButtonPress = new RelayCommand(CreateSettings);
+            Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");       
         }
 
         private string _logTxt;
