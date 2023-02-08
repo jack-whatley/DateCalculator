@@ -10,9 +10,11 @@ namespace DateCalculator.ViewModel
     {
         public MainWindowViewModel()
         {
+            /* should be unnecessary
             HomeVM = new HomeViewModel();
             CalcVM = new CalculatorViewModel();
             DownVM = new DownloadViewModel();
+            */
 
             CurrentViewModel = HomeVM;
             WindowPathState = "M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z";
@@ -22,6 +24,7 @@ namespace DateCalculator.ViewModel
             DownloadViewCommand = new RelayCommand(o => CurrentViewModel = DownVM);
             CloseApp = new RelayCommand(o => App.Current.Shutdown());
             MinimiseApp = new RelayCommand(o => App.Current.MainWindow.WindowState = WindowState.Minimized);
+            // switch between fullscreen and normal size
             MaximiseApp = new RelayCommand(SwitchMaxMin);
         }
 
@@ -37,9 +40,9 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private HomeViewModel HomeVM { get; set; } 
-        private CalculatorViewModel CalcVM { get; set; }
-        private DownloadViewModel DownVM { get; set; }
+        private static HomeViewModel HomeVM { get; set; } = new HomeViewModel();
+        private static CalculatorViewModel CalcVM { get; set; } = new CalculatorViewModel();
+        private static DownloadViewModel DownVM { get; set; } = new DownloadViewModel(); 
 
         private BaseViewModel _currentViewModel; 
         

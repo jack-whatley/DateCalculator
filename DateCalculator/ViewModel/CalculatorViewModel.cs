@@ -195,6 +195,7 @@ namespace DateCalculator.ViewModel
 
             var Program = new InputSanitisationAlgorithms();
 
+            // if string is not empty && year is within range (same for month, day)
             if (!string.IsNullOrEmpty(YearInput) && Program.SanitiseYear(YearInput))
             {
                 if (!string.IsNullOrEmpty(MonthInput) && Program.SanitiseMonth(MonthInput))
@@ -242,37 +243,21 @@ namespace DateCalculator.ViewModel
                 CalOutput = "Julian";
             }
 
-            switch (ProgramResult)
+            DayOutput = ProgramResult switch
             {
-                case 0:
-                    DayOutput = "Sunday";
-                    break;
-                case 1:
-                    DayOutput = "Monday";
-                    break;
-                case 2:
-                    DayOutput = "Tuesday";
-                    break;
-                case 3:
-                    DayOutput = "Wednesday";
-                    break;
-                case 4:
-                    DayOutput = "Thursday";
-                    break;
-                case 5:
-                    DayOutput = "Friday";
-                    break;
-                case 6:
-                    DayOutput = "Saturday";
-                    break;
-                default:
-                    DayOutput = "Fail";
-                    break;
-            }
+                0 => "Sunday",
+                1 => "Monday",
+                2 => "Tuesday",
+                3 => "Wednesday",
+                4 => "Thursday",
+                5 => "Friday",
+                6 => "Saturday",
+                _ => "Fail",
+            };
 
             // 1752 is special case due to index method for month and day
             // month and day are -1 due to array starting at 0
-            // +11 for jump to 14th sept from 2nd
+            // +12 for jump to 14th sept from 2nd
             if (YearInput == "1752" && MonthInput == "8" && int.Parse(DayInput) >= 2)
             {
                 InputOutput = $"{int.Parse(DayInput) + 12} / {int.Parse(MonthInput) + 1} / {YearInput}";

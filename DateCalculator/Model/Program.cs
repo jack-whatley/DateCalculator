@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Text.Json;
 
 namespace DateCalculator.Model
 {
@@ -66,8 +69,51 @@ namespace DateCalculator.Model
 
     public class Data
     {
+        public string app_path { get; set; }
+        public string app_settings_path { get; set; }
         public bool ytdl_status { get; set; }
         public string ytdl_path { get; set; }
 
+        public void SetDefault()
+        {
+            // app root directory
+            this.app_path = @"C:/jwapp";
+            this.app_settings_path = this.app_path + @"/settings.json";
+            // ytdl installation status
+            this.ytdl_status = false;
+            this.ytdl_path = this.app_path + @"/ytdl/youtube-dl.exe";
+        }
+
+        public void CreateSettings()
+        {
+            if (!Directory.Exists(app_path))
+            {
+                Directory.CreateDirectory(app_path);
+            }
+
+            if (!File.Exists(app_settings_path))
+            {
+                File.Create(app_settings_path);
+            }
+            // if settings exist there is no need to overwrite user settings 
+            // filling settings json
+            var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(app_settings_path, json);
+            Debug.WriteLine(this);
+        }
+
+        public string CheckYTDL()
+        {
+            if (File.Exists(this.ytdl_path))
+            {
+                this.ytdl_status = true;
+                return "YTDL Installed";
+            }
+            else
+            {
+                this.ytdl_status = false;
+                return "YTDL Not Found / Uninstalled";
+            }
+        }
     }
 }

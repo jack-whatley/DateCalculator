@@ -18,10 +18,14 @@ namespace DateCalculator.ViewModel
         public DownloadViewModel() 
         {
             ButtonPress = new RelayCommand(CreateSettings);
-            Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");       
+            CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
+            settings.SetDefault();
+            settings.CreateSettings();
         }
 
-        private string _logTxt;
+        public Data settings = new Data() { };
+
+        private string _logTxt, _linkTxt, _statTxt;
 
         public string LogText
         {
@@ -33,7 +37,31 @@ namespace DateCalculator.ViewModel
             }
         }
 
+        public string LinkText
+        {
+            get { return _linkTxt; }
+            set
+            {
+                _linkTxt = value;
+                OnPropertyChanged(nameof(LinkText));
+            }
+        }
+
+        public string StatusText
+        {
+            get { return _statTxt; }
+            set
+            {
+                _statTxt = value;
+                OnPropertyChanged(nameof(StatusText));
+            }
+        }
+
+        readonly Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
+
         public RelayCommand ButtonPress { get; set; }
+
+        public RelayCommand CheckYTDL { get; set; }
 
         public void CreateSettings(object obj)
         {
@@ -62,11 +90,6 @@ namespace DateCalculator.ViewModel
                 }
 
                 File.Create(FileName);*/
-
-                var settings = new Data()
-                {
-                    ytdl_status = false,
-                };
 
                 var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(FileName, json);
