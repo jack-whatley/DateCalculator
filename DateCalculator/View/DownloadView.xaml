@@ -90,7 +90,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Foreground="White"
-                                   Text="YTDL Status:"
+                                   Text="YTDL Status:"  
                                    FontSize="11"/>
 
                         <Button Content="Check Status"
@@ -101,12 +101,51 @@
                                 Margin="0,0,0,10"
                                 Command="{Binding CheckYTDL}"/>
 
+                        <Button Content="Download YTDL"
+                                Width="100"
+                                Height="20"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Margin="0,0,0,10"
+                                Command="{Binding DownYTDL}"
+                                Grid.Column="1"/>
+
                         <TextBlock Grid.Column="1"
                                    Foreground="White"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
                                    Text="{Binding StatusText}"
                                    FontSize="11"/>
+                    </Grid>
+
+                    <TextBlock Text="YTDL Location"
+                               Foreground="White"
+                               Grid.Column="1"/>
+                    
+                    <Grid Grid.Row="1"
+                          Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox VerticalAlignment="Bottom"
+                                 Text="{Binding YTDLPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="5" 
+                                 Grid.ColumnSpan="2"
+                                 Margin="0,0,10,10"
+                                 FontSize="11"/>
+
+                        <TextBlock Foreground="White"
+                                   Text="Path Status: "  
+                                   FontSize="11"
+                                   VerticalAlignment="Top"/>
+
+                        <TextBlock Foreground="White"
+                                   Text="{Binding PathStatus}"  
+                                   FontSize="11"
+                                   VerticalAlignment="Top"
+                                   Grid.Column="1"/>
                     </Grid>
                 </Grid>
 
@@ -142,7 +181,6 @@
                               Padding="5"
                               Background="Black">
 
-                    <!-- {Binding LogText}  -->
                     <TextBlock Text="{Binding LogText}"
                                Foreground="White"/>
                 </ScrollViewer>

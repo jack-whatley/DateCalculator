@@ -94,12 +94,10 @@ namespace DateCalculator.Model
             if (!File.Exists(app_settings_path))
             {
                 File.Create(app_settings_path);
+                
+                var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(app_settings_path, json);
             }
-            // if settings exist there is no need to overwrite user settings 
-            // filling settings json
-            var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(app_settings_path, json);
-            Debug.WriteLine(this);
         }
 
         public string CheckYTDL()
@@ -114,6 +112,12 @@ namespace DateCalculator.Model
                 this.ytdl_status = false;
                 return "YTDL Not Found / Uninstalled";
             }
+        }
+
+        public void UpdateSettings()
+        {
+            var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(app_settings_path, json);
         }
     }
 }

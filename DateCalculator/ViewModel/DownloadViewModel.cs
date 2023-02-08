@@ -15,17 +15,59 @@ namespace DateCalculator.ViewModel
 {
     class DownloadViewModel : BaseViewModel
     {
-        public DownloadViewModel() 
+        public DownloadViewModel()
         {
             ButtonPress = new RelayCommand(CreateSettings);
             CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
             settings.SetDefault();
             settings.CreateSettings();
+            YTDLPath = settings.ytdl_path;
         }
 
         public Data settings = new Data() { };
 
-        private string _logTxt, _linkTxt, _statTxt;
+        private string _logTxt, _linkTxt, _statTxt, _ytdlPath, _pathStat;
+
+        public string PathStatus
+        {
+            get { return _pathStat; }
+            set
+            {
+                _pathStat = value;
+                OnPropertyChanged(nameof(PathStatus));
+            }
+        }
+
+        public string YTDLPath
+        {
+            get { return _ytdlPath; }
+            set
+            {
+                _ytdlPath = value;
+                OnPathChanged();
+            }
+        }
+
+        private void OnPathChanged()
+        {
+            OnPropertyChanged(nameof(YTDLPath));
+            
+            // checking ytdl file
+            if (File.Exists(YTDLPath))
+            {
+                // file exists
+                PathStatus = "YTDL Found";
+                settings.ytdl_status = true;
+                settings.ytdl_path = YTDLPath;
+                settings.UpdateSettings();
+            }
+            else
+            {
+                // file doesnt exist
+                PathStatus = "YTDL Not Found";
+                settings.ytdl_status = false;
+            }
+        }
 
         public string LogText
         {
