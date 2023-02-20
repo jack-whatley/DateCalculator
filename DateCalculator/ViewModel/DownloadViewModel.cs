@@ -32,9 +32,11 @@ namespace DateCalculator.ViewModel
 
             CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
             OpenSettings = new RelayCommand(OpenSettingsFolder);
+            //DownYTDL = new RelayCommand(CheckLink, StartDownload);
+            DownloadVideo = new RelayCommand(CheckLink, StartDownload);
         }
 
-        // @"C:/jwapp", @"C:/jwapp/settings.json", false, @"C:/jwapp/ytdl/youtube-dl.exe"
+        // latest ytdl: pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl
 
         public Data settings = new Data() { };
 
@@ -60,27 +62,6 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private void OnPathChanged()
-        {
-            OnPropertyChanged(nameof(YTDLPath));
-            
-            // checking ytdl file
-            if (File.Exists(YTDLPath))
-            {
-                // file exists
-                PathStatus = "YTDL Found";
-                settings.ytdl_status = true;
-                settings.ytdl_path = YTDLPath;
-                settings.UpdateSettings();
-            }
-            else
-            {
-                // file doesnt exist
-                PathStatus = "YTDL Not Found";
-                settings.ytdl_status = false;
-            }
-        }
-
         public string LogText
         {
             get { return _logTxt; }
@@ -98,6 +79,8 @@ namespace DateCalculator.ViewModel
             {
                 _linkTxt = value;
                 OnPropertyChanged(nameof(LinkText));
+                // update command ability to execute
+                DownloadVideo.RaiseCanExecuteChanged();
             }
         }
 
@@ -113,62 +96,67 @@ namespace DateCalculator.ViewModel
 
         readonly Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
 
+        private bool CheckLink(object obj)
+        {
+            if (!string.IsNullOrEmpty(LinkText))
+            {
+                if (regex.IsMatch(LinkText))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void OnPathChanged()
+        {
+            OnPropertyChanged(nameof(YTDLPath));
+
+            // checking ytdl file
+            if (File.Exists(YTDLPath))
+            {
+                // file exists
+                PathStatus = "YTDL Found";
+                settings.ytdl_status = true;
+                settings.ytdl_path = YTDLPath;
+                settings.UpdateSettings();
+            }
+            else
+            {
+                // file doesnt exist
+                PathStatus = "YTDL Not Found";
+                settings.ytdl_status = false;
+            }
+        }
+
         public RelayCommand CheckYTDL { get; set; }
 
         public RelayCommand OpenSettings { get; set; }
 
+        public RelayCommand DownYTDL { get; set; }
+
+        public RelayCommand DownloadVideo { get; set; }
+
         public void OpenSettingsFolder(object obj)
         {
-            var psi = new System.Diagnostics.ProcessStartInfo() { FileName = settings.app_path, UseShellExecute = true };
-            Process.Start(psi);
+            var SettingFolder = new System.Diagnostics.ProcessStartInfo() { FileName = settings.app_path, UseShellExecute = true };
+            Process.Start(SettingFolder);
         }
 
-        public void CreateSettings(object obj)
+        private void StartDownload(object obj)
         {
-            try
-            {
-                // creating settings txt
-                string FileName = @"C:\jwapp\settings.json";
-                
-                // creating directory for app
-                /*if (Directory.Exists("C:\\jwapp"))
-                {
-                    return;
-                }
-                else
-                {
-                    Directory.CreateDirectory("C:\\jwapp");
-                }
-
-                if (File.Exists(FileName))
-                {
-                    return;
-                }
-                else
-                {
-                    var file = File.Create(FileName);
-                }
-
-                File.Create(FileName);*/
-
-                var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(FileName, json);
-            }
-            catch
-            {
-                LogText += "\n[console] directory already exists or error";
-            }
-            
-        }
-
-        // download video function
-        public void DownloadVideo(object obj)
-        {
-            string YTDL = "/C C:/Users/the-c/Desktop/youtube-downloader/youtube-dl.exe";
-            string link = "https://youtu.be/REU8pMbh23I";
-            string path = "~/Desktop";
-            string save = $"-o {path}/%(title)s.%(ext)s";
-            string command = $"{YTDL} {save} {link}"; // {args} or --help
+            // usage example: python -m youtube_dl -o "~/Desktop/%(title)s.%(ext)s" https://www.youtube.com/watch?v=TGqWphOB9io
+            string YTDL = "/C python -m youtube_dl";
+            string path = @"-o ~/Desktop/%(title)s.%(ext)s";
+            string URL = LinkText;
+            string command = $"{YTDL} {path} {URL}";
 
             // laying out cmd process
             Process CMD = new Process
@@ -210,6 +198,15 @@ namespace DateCalculator.ViewModel
             {
                 LogText += "[console] ytdl error";
             }
+
+            /* out of date method
+            string YTDL = $"/C {settings.ytdl_path}";
+            string link = LinkText;
+            string path = "~/Desktop"; // folder its saved in
+            string save = $"-o {path}/%(title)s.%(ext)s"; // the way its saved
+            string command = $"{YTDL} {save} {link}";
+            -o ~/Desktop/%(title)s.%(ext)s
+             */
         }
     }
 }
