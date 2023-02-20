@@ -10,11 +10,9 @@ namespace DateCalculator.ViewModel
     {
         public MainWindowViewModel()
         {
-            /* should be unnecessary
             HomeVM = new HomeViewModel();
             CalcVM = new CalculatorViewModel();
             DownVM = new DownloadViewModel();
-            */
 
             CurrentViewModel = HomeVM;
             WindowPathState = "M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z";
@@ -40,9 +38,9 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private static HomeViewModel HomeVM { get; } = new HomeViewModel();
-        private static CalculatorViewModel CalcVM { get; } = new CalculatorViewModel();
-        private static DownloadViewModel DownVM { get; } = new DownloadViewModel(); 
+        private static HomeViewModel HomeVM { get; set; }
+        private static CalculatorViewModel CalcVM { get; set; }
+        private static DownloadViewModel DownVM { get; set; }
 
         private BaseViewModel _currentViewModel; 
         

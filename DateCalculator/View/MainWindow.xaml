@@ -132,6 +132,9 @@
                             Margin="10"
                             Content="{Binding Path=CurrentViewModel}"/>
 
+            <!-- Content="{Binding Path=CurrentViewModel}" -->
+            <!-- DataContext="{x:Static viewmodel:MainWindowViewModel.CurrentViewModel}" -->
+
         </Grid>
 
     </Border>

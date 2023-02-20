@@ -27,6 +27,7 @@
             <DataTemplate DataType="{x:Type viewmodel:DownloadViewModel}">
                 <view:DownloadView/>
             </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

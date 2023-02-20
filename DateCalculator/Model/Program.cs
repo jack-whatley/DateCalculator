@@ -69,6 +69,14 @@ namespace DateCalculator.Model
 
     public class Data
     {
+        public Data(string app_path, string app_settings_path, bool ytdl_status, string ytdl_path)
+        {
+            this.app_path = app_path;
+            this.app_settings_path = app_settings_path;
+            this.ytdl_status = ytdl_status;
+            this.ytdl_path = ytdl_path;
+        }
+
         public string app_path { get; set; }
         public string app_settings_path { get; set; }
         public bool ytdl_status { get; set; }
@@ -86,17 +94,28 @@ namespace DateCalculator.Model
 
         public void CreateSettings()
         {
-            if (!Directory.Exists(app_path))
+            if (!Directory.Exists(this.app_path))
             {
-                Directory.CreateDirectory(app_path);
+                Directory.CreateDirectory(this.app_path);
             }
 
             if (!File.Exists(app_settings_path))
             {
-                File.Create(app_settings_path);
-                
+                // File.WriteAllText handles creation if doesnt exist (which is a given in this instance)
                 var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(app_settings_path, json);
+            }
+        }
+
+        public bool CheckSettings()
+        {
+            if (File.Exists(this.app_settings_path))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

@@ -17,14 +17,24 @@ namespace DateCalculator.ViewModel
     {
         public DownloadViewModel()
         {
-            ButtonPress = new RelayCommand(CreateSettings);
-            CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
-            settings.SetDefault();
-            settings.CreateSettings();
+            // have to load settings everytime due to info not being saved
+            if (settings.CheckSettings() == true)
+            {
+                // TODO: fix this error ong
+                settings = JsonSerializer.Deserialize<Data>(settings.app_settings_path);
+            }
+            else
+            {
+                settings.SetDefault();
+                settings.CreateSettings();
+            }
             YTDLPath = settings.ytdl_path;
+
+            CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
+            OpenSettings = new RelayCommand(o => Process.Start("explorer.exe", "/select, " + settings.app_path));
         }
 
-        public Data settings = new Data() { };
+        public Data settings = new Data(@"C:/jwapp", @"C:/jwapp/settings.json", false, @"C:/jwapp/ytdl/youtube-dl.exe") { };
 
         private string _logTxt, _linkTxt, _statTxt, _ytdlPath, _pathStat;
 
@@ -101,9 +111,9 @@ namespace DateCalculator.ViewModel
 
         readonly Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
 
-        public RelayCommand ButtonPress { get; set; }
-
         public RelayCommand CheckYTDL { get; set; }
+
+        public RelayCommand OpenSettings { get; set; }
 
         public void CreateSettings(object obj)
         {
