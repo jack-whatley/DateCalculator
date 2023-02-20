@@ -40,9 +40,9 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private static HomeViewModel HomeVM { get; set; } = new HomeViewModel();
-        private static CalculatorViewModel CalcVM { get; set; } = new CalculatorViewModel();
-        private static DownloadViewModel DownVM { get; set; } = new DownloadViewModel(); 
+        private static HomeViewModel HomeVM { get; } = new HomeViewModel();
+        private static CalculatorViewModel CalcVM { get; } = new CalculatorViewModel();
+        private static DownloadViewModel DownVM { get; } = new DownloadViewModel(); 
 
         private BaseViewModel _currentViewModel; 
         

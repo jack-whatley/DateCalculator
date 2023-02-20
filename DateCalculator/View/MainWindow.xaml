@@ -130,7 +130,7 @@
             <ContentControl Grid.Row="3"
                             Grid.Column="1"
                             Margin="10"
-                            Content="{Binding CurrentViewModel}"/>
+                            Content="{Binding Path=CurrentViewModel}"/>
 
         </Grid>
 
