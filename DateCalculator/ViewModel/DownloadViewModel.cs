@@ -17,24 +17,26 @@ namespace DateCalculator.ViewModel
     {
         public DownloadViewModel()
         {
-            // have to load settings everytime due to info not being saved
-            if (settings.CheckSettings() == true)
+            // need to set default every time to find paths, can then overwrite if settings are loaded
+            settings.SetDefault();
+            if (settings.CheckSettings())
             {
-                // TODO: fix this error ong
-                settings = JsonSerializer.Deserialize<Data>(settings.app_settings_path);
+                string JsonString = File.ReadAllText(settings.app_settings_path);
+                settings = JsonSerializer.Deserialize<Data>(JsonString);
             }
             else
             {
-                settings.SetDefault();
                 settings.CreateSettings();
             }
             YTDLPath = settings.ytdl_path;
 
             CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
-            OpenSettings = new RelayCommand(o => Process.Start("explorer.exe", "/select, " + settings.app_path));
+            OpenSettings = new RelayCommand(OpenSettingsFolder);
         }
 
-        public Data settings = new Data(@"C:/jwapp", @"C:/jwapp/settings.json", false, @"C:/jwapp/ytdl/youtube-dl.exe") { };
+        // @"C:/jwapp", @"C:/jwapp/settings.json", false, @"C:/jwapp/ytdl/youtube-dl.exe"
+
+        public Data settings = new Data() { };
 
         private string _logTxt, _linkTxt, _statTxt, _ytdlPath, _pathStat;
 
@@ -114,6 +116,12 @@ namespace DateCalculator.ViewModel
         public RelayCommand CheckYTDL { get; set; }
 
         public RelayCommand OpenSettings { get; set; }
+
+        public void OpenSettingsFolder(object obj)
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo() { FileName = settings.app_path, UseShellExecute = true };
+            Process.Start(psi);
+        }
 
         public void CreateSettings(object obj)
         {
