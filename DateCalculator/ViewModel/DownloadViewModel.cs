@@ -19,6 +19,8 @@ namespace DateCalculator.ViewModel
         {
             // need to set default every time to find paths, can then overwrite if settings are loaded
             settings.SetDefault();
+
+            // checks if it should load or remake settings
             if (settings.CheckSettings())
             {
                 string JsonString = File.ReadAllText(settings.app_settings_path);
@@ -80,27 +82,6 @@ namespace DateCalculator.ViewModel
             else
             {
                 return false;
-            }
-        }
-
-        private void OnPathChanged()
-        {
-            OnPropertyChanged(nameof(YTDLPath));
-
-            // checking ytdl file
-            if (File.Exists(YTDLPath))
-            {
-                // file exists
-                PathStatus = "YTDL Found";
-                settings.ytdl_status = true;
-                settings.ytdl_path = YTDLPath;
-                settings.UpdateSettings();
-            }
-            else
-            {
-                // file doesnt exist
-                PathStatus = "YTDL Not Found";
-                settings.ytdl_status = false;
             }
         }
 
