@@ -28,11 +28,8 @@ namespace DateCalculator.ViewModel
             {
                 settings.CreateSettings();
             }
-            YTDLPath = settings.ytdl_path;
 
-            CheckYTDL = new RelayCommand(o => StatusText = settings.CheckYTDL());
             OpenSettings = new RelayCommand(OpenSettingsFolder);
-            //DownYTDL = new RelayCommand(CheckLink, StartDownload);
             DownloadVideo = new RelayCommand(CheckLink, StartDownload);
         }
 
@@ -40,27 +37,7 @@ namespace DateCalculator.ViewModel
 
         public Data settings = new Data() { };
 
-        private string _logTxt, _linkTxt, _statTxt, _ytdlPath, _pathStat;
-
-        public string PathStatus
-        {
-            get { return _pathStat; }
-            set
-            {
-                _pathStat = value;
-                OnPropertyChanged(nameof(PathStatus));
-            }
-        }
-
-        public string YTDLPath
-        {
-            get { return _ytdlPath; }
-            set
-            {
-                _ytdlPath = value;
-                OnPathChanged();
-            }
-        }
+        private string _logTxt, _linkTxt;
 
         public string LogText
         {
@@ -84,20 +61,11 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        public string StatusText
-        {
-            get { return _statTxt; }
-            set
-            {
-                _statTxt = value;
-                OnPropertyChanged(nameof(StatusText));
-            }
-        }
-
-        readonly Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
-
         private bool CheckLink(object obj)
         {
+            // youtube link regex
+            Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
+
             if (!string.IsNullOrEmpty(LinkText))
             {
                 if (regex.IsMatch(LinkText))
@@ -135,8 +103,6 @@ namespace DateCalculator.ViewModel
                 settings.ytdl_status = false;
             }
         }
-
-        public RelayCommand CheckYTDL { get; set; }
 
         public RelayCommand OpenSettings { get; set; }
 
