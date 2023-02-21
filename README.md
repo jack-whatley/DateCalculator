@@ -1,8 +1,8 @@
 # C# Learning Project
-A project to learn more about C#.
+A project to learn more about C#, MVVM and WPF.
 
 ### Requirements
-- Using Windows OS
+- Windows OS
 - .NET Core 3.1
 - Python 3*  
 
