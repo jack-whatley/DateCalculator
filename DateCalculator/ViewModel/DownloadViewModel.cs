@@ -33,13 +33,23 @@ namespace DateCalculator.ViewModel
 
             OpenSettings = new RelayCommand(OpenSettingsFolder);
             DownloadVideo = new RelayCommand(CheckLink, StartDownload);
+            DownYTDL = new RelayCommand(DownloadYTDL);
+            //CheckYTDL = new RelayCommand(o => DownYTDL.RaiseCanExecuteChanged());
         }
-
-        // latest ytdl: pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl
 
         public Data settings = new Data() { };
 
-        private string _logTxt, _linkTxt;
+        private string _logTxt, _linkTxt, _statText;
+
+        public string StatusText
+        {
+            get { return _statText; }
+            set
+            {
+                _statText = value;
+                OnPropertyChanged(nameof(StatusText));
+            }
+        }
 
         public string LogText
         {
@@ -85,13 +95,61 @@ namespace DateCalculator.ViewModel
             }
         }
 
+        private bool CheckYTDLInstallation(object obj)
+        {
+            string PIPList = "pip list";
+
+            Process CMD = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "CMD.exe",
+                    Arguments = PIPList,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                }
+            };
+
+            try
+            {
+                CMD.Start();
+                CMD.WaitForExit();
+
+                while (!CMD.StandardOutput.EndOfStream)
+                {
+                    string Line = CMD.StandardOutput.ReadLine();
+                    PipOutput += $"{Line} ";
+                }
+            }
+            catch 
+            {
+                LogText += "[console] pip / python error, check if its installed";
+            }
+
+            // should appear in pip list
+            if (PipOutput.Contains("youtube-dl"))
+            {
+                // if it appears there is no need to reinstall
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public RelayCommand OpenSettings { get; set; }
 
         public RelayCommand DownYTDL { get; set; }
 
         public RelayCommand DownloadVideo { get; set; }
 
-        public void OpenSettingsFolder(object obj)
+        public RelayCommand CheckYTDL { get; set; }
+
+        private void OpenSettingsFolder(object obj)
         {
             var SettingFolder = new System.Diagnostics.ProcessStartInfo() { FileName = settings.app_path, UseShellExecute = true };
             Process.Start(SettingFolder);
@@ -154,6 +212,53 @@ namespace DateCalculator.ViewModel
             string command = $"{YTDL} {save} {link}";
             -o ~/Desktop/%(title)s.%(ext)s
              */
+        }
+
+        public string PipOutput = "";
+
+        private void DownloadYTDL(object obj)
+        {
+            // downloads latest version of master branch as youtube_dl
+            string PIP = "/C pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl";
+
+            Process CMD = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "CMD.exe",
+                    Arguments = PIP,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                }
+            };
+
+            try
+            {
+                CMD.Start();
+                CMD.WaitForExit();
+
+                LogText += "[console] pip activated";
+
+                // outputting results
+                while (!CMD.StandardOutput.EndOfStream)
+                {
+                    string Line = CMD.StandardOutput.ReadLine();
+                    LogText += $"\n{Line}";
+                }
+
+                while (!CMD.StandardError.EndOfStream)
+                {
+                    string ErrorLine = CMD.StandardError.ReadLine();
+                    LogText += $"\n{ErrorLine}";
+                }
+            }
+            catch
+            {
+                LogText += "[console] pip / python error, check if its installed";
+            }
         }
     }
 }
