@@ -15,10 +15,15 @@ namespace DateCalculator.ViewModel
     {
         public CalculatorViewModel()
         {
+            // default button text
             ButtonText = "Submit";
+
+            // setting up relay command
             Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
+        // propfulls
+        
         private string[] _dayList; 
         
         private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut, _butText;
@@ -103,6 +108,8 @@ namespace DateCalculator.ViewModel
             }
         }
 
+        // update functions
+
         private void OnYearChanged()
         { 
             OnPropertyChanged(nameof(YearInput)); 
@@ -113,8 +120,8 @@ namespace DateCalculator.ViewModel
         private void OnMonthChanged()
         {
             OnPropertyChanged(nameof(MonthInput));
-            // method for updating selectable days
             Submit.RaiseCanExecuteChanged();
+            // method for updating selectable days
             SetDayList();
         }
 
@@ -124,7 +131,11 @@ namespace DateCalculator.ViewModel
             Submit.RaiseCanExecuteChanged(); 
         }
 
+        // relay commands
+
         public RelayCommand Submit { get; set; }
+
+        // relay command functions
 
         public void SetDayList()
         {

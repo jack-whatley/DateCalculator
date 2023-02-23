@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Releases\**" />
+    <EmbeddedResource Remove="Releases\**" />
+    <None Remove="Releases\**" />
+    <Page Remove="Releases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="Theme\DayOutputTheme.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Releases\" />
   </ItemGroup>
 
 </Project>
