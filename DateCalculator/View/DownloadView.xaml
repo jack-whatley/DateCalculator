@@ -68,7 +68,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Margin="0,10,0,0"
-                                Command="{Binding DownloadVideo}"/>
+                                Command="{Binding DownVideo}"/>
                         
                         <Button Content="Open Settings"
                                 Width="100"
@@ -94,7 +94,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <!-- ytdl status box -->
 
                     <TextBlock Text="YTDL Status"
@@ -106,30 +106,13 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Content="Check Status"
-                                Width="100"
-                                Height="20"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Margin="0,0,0,0"
-                                Command="{Binding CheckYTDL}"/>
-                        
-                        <!--<TextBlock Foreground="White"
-                                   Text="YTDL Status:"  
-                                   FontSize="11"/>-->
 
-                        <TextBlock Grid.Column="1"
-                                   Foreground="White"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Text="{Binding StatusText}"
-                                   FontSize="11"/>
                     </Grid>
 
                     <TextBlock Text="YTDL Location"
                                Foreground="White"
                                Grid.Column="1"/>
-                    
+
                     <Grid Grid.Row="1"
                           Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -152,27 +135,8 @@
                                    Grid.Column="1"
                                    TextWrapping="Wrap"
                                    Padding="5"/>
-
-                        <!--<TextBox VerticalAlignment="Bottom"
-                                 Text="{Binding YTDLPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="5" 
-                                 Grid.ColumnSpan="2"
-                                 Margin="0,0,10,10"
-                                 FontSize="11"/>
-
-                        <TextBlock Foreground="White"
-                                   Text="{Binding PathStatus}"  
-                                   FontSize="11"
-                                   VerticalAlignment="Top"
-                                   Grid.Column="1"/>-->
                     </Grid>
                 </Grid>
-
-                <!--<Button Content="Test Directory + JSON"
-                        Width="100"
-                        Height="30"
-                        Command="{Binding ButtonPress}"
-                        Grid.Row="1"/>-->
             </Grid>
         </Border>
 

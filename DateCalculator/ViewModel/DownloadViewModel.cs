@@ -32,24 +32,15 @@ namespace DateCalculator.ViewModel
             }
 
             OpenSettings = new RelayCommand(OpenSettingsFolder);
-            DownloadVideo = new RelayCommand(CheckLink, StartDownload);
+            DownVideo = new RelayCommand(CheckLink, DownloadVideo);
             DownYTDL = new RelayCommand(DownloadYTDL);
-            //CheckYTDL = new RelayCommand(o => DownYTDL.RaiseCanExecuteChanged());
         }
+
+        public string PipOutput = "";
 
         public Data settings = new Data() { };
 
-        private string _logTxt, _linkTxt, _statText;
-
-        public string StatusText
-        {
-            get { return _statText; }
-            set
-            {
-                _statText = value;
-                OnPropertyChanged(nameof(StatusText));
-            }
-        }
+        private string _logTxt, _linkTxt;
 
         public string LogText
         {
@@ -78,6 +69,7 @@ namespace DateCalculator.ViewModel
             // youtube link regex
             Regex regex = new Regex(@"^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube(-nocookie)?\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$");
 
+            // null into regex causes error
             if (!string.IsNullOrEmpty(LinkText))
             {
                 if (regex.IsMatch(LinkText))
@@ -95,59 +87,11 @@ namespace DateCalculator.ViewModel
             }
         }
 
-        private bool CheckYTDLInstallation(object obj)
-        {
-            string PIPList = "pip list";
-
-            Process CMD = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "CMD.exe",
-                    Arguments = PIPList,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                }
-            };
-
-            try
-            {
-                CMD.Start();
-                CMD.WaitForExit();
-
-                while (!CMD.StandardOutput.EndOfStream)
-                {
-                    string Line = CMD.StandardOutput.ReadLine();
-                    PipOutput += $"{Line} ";
-                }
-            }
-            catch 
-            {
-                LogText += "[console] pip / python error, check if its installed";
-            }
-
-            // should appear in pip list
-            if (PipOutput.Contains("youtube-dl"))
-            {
-                // if it appears there is no need to reinstall
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         public RelayCommand OpenSettings { get; set; }
 
         public RelayCommand DownYTDL { get; set; }
 
-        public RelayCommand DownloadVideo { get; set; }
-
-        public RelayCommand CheckYTDL { get; set; }
+        public RelayCommand DownVideo { get; set; }
 
         private void OpenSettingsFolder(object obj)
         {
@@ -155,7 +99,7 @@ namespace DateCalculator.ViewModel
             Process.Start(SettingFolder);
         }
 
-        private void StartDownload(object obj)
+        private void DownloadVideo(object obj)
         {
             // usage example: python -m youtube_dl -o "~/Desktop/%(title)s.%(ext)s" https://www.youtube.com/watch?v=TGqWphOB9io
             string YTDL = "/C python -m youtube_dl";
@@ -203,18 +147,7 @@ namespace DateCalculator.ViewModel
             {
                 LogText += "[console] ytdl error";
             }
-
-            /* out of date method
-            string YTDL = $"/C {settings.ytdl_path}";
-            string link = LinkText;
-            string path = "~/Desktop"; // folder its saved in
-            string save = $"-o {path}/%(title)s.%(ext)s"; // the way its saved
-            string command = $"{YTDL} {save} {link}";
-            -o ~/Desktop/%(title)s.%(ext)s
-             */
         }
-
-        public string PipOutput = "";
 
         private void DownloadYTDL(object obj)
         {
