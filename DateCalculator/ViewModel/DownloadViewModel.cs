@@ -31,16 +31,17 @@ namespace DateCalculator.ViewModel
                 settings.CreateSettings();
             }
 
+            OutLoc = settings.output_location;
+
             OpenSettings = new RelayCommand(OpenSettingsFolder);
             DownVideo = new RelayCommand(CheckLink, DownloadVideo);
             DownYTDL = new RelayCommand(DownloadYTDL);
+            OpenLink = new RelayCommand(OpenLinkFunction);
         }
-
-        public string PipOutput = "";
 
         public Data settings = new Data() { };
 
-        private string _logTxt, _linkTxt;
+        private string _logTxt, _linkTxt, _outTxt;
 
         public string LogText
         {
@@ -60,7 +61,23 @@ namespace DateCalculator.ViewModel
                 _linkTxt = value;
                 OnPropertyChanged(nameof(LinkText));
                 // update command ability to execute
-                DownloadVideo.RaiseCanExecuteChanged();
+                DownVideo.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string OutLoc
+        {
+            get { return _outTxt; }
+            set 
+            { 
+                _outTxt = value; 
+                OnPropertyChanged(nameof(OutLoc));
+                
+                // updating output location
+                settings.output_location = OutLoc;
+                
+                // saving new settings
+                settings.UpdateSettings();
             }
         }
 
@@ -93,6 +110,8 @@ namespace DateCalculator.ViewModel
 
         public RelayCommand DownVideo { get; set; }
 
+        public RelayCommand OpenLink { get; set; }
+
         private void OpenSettingsFolder(object obj)
         {
             var SettingFolder = new System.Diagnostics.ProcessStartInfo() { FileName = settings.app_path, UseShellExecute = true };
@@ -103,7 +122,7 @@ namespace DateCalculator.ViewModel
         {
             // usage example: python -m youtube_dl -o "~/Desktop/%(title)s.%(ext)s" https://www.youtube.com/watch?v=TGqWphOB9io
             string YTDL = "/C python -m youtube_dl";
-            string path = @"-o ~/Desktop/%(title)s.%(ext)s";
+            string path = $"-o {settings.output_location}";
             string URL = LinkText;
             string command = $"{YTDL} {path} {URL}";
 
@@ -124,23 +143,24 @@ namespace DateCalculator.ViewModel
 
             try
             {
-                // running and closing process
+                // running process
                 CMD.Start();
+
+                // ending process
                 CMD.WaitForExit();
 
                 LogText += "[console] ytdl activated";
 
                 // outputting results
-                while (!CMD.StandardOutput.EndOfStream)
+                while (CMD.StandardOutput.ReadLine() != null)
                 {
-                    string Line = CMD.StandardOutput.ReadLine();
-                    LogText += $"\n{Line}";
+                    LogText += $"\n{CMD.StandardOutput.ReadLine()}";
+                    Debug.WriteLine(CMD.StandardOutput.ReadLine());
                 }
 
-                while (!CMD.StandardError.EndOfStream)
+                while (CMD.StandardError.ReadLine() != null)
                 {
-                    string ErrorLine = CMD.StandardError.ReadLine();
-                    LogText += $"\n{ErrorLine}";
+                    LogText += $"\n{CMD.StandardError.ReadLine()}";
                 }
             }
             catch
@@ -192,6 +212,14 @@ namespace DateCalculator.ViewModel
             {
                 LogText += "[console] pip / python error, check if its installed";
             }
+        }
+
+        private void OpenLinkFunction(object obj) 
+        {
+            string url = "https://github.com/ytdl-org/youtube-dl#output-template";
+            
+            // using cmd to open default browser
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
         }
     }
 }

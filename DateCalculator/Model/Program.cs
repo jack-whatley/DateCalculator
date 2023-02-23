@@ -75,14 +75,16 @@ namespace DateCalculator.Model
 
         public string app_settings_path { get; set; }
 
-        public string download_location { get; set; }
+        public string output_location { get; set; }
 
         public void SetDefault()
         {
             // app root directory
-            this.app_path = @"C:/jwapp";
+            this.app_path = $"{Environment.GetFolderPath(Environment.SpecialFolder.System)[..2]}/jwapp";
             this.app_settings_path = this.app_path + @"/settings.json";
-            this.download_location = "";
+
+            // works on ytdl logic not c#
+            this.output_location = @"~/Desktop/%(title)s.%(ext)s";
         }
 
         public void CreateSettings()
