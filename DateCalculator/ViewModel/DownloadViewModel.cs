@@ -24,22 +24,28 @@ namespace DateCalculator.ViewModel
             if (settings.CheckSettings())
             {
                 string JsonString = File.ReadAllText(settings.app_settings_path);
-                settings = JsonSerializer.Deserialize<Data>(JsonString);
+                settings = JsonSerializer.Deserialize<YTDLSettings>(JsonString);
             }
             else
             {
                 settings.CreateSettings();
             }
 
+            // setting value of output location for user
             OutLoc = settings.output_location;
 
+            // setting up relay commands
             OpenSettings = new RelayCommand(OpenSettingsFolder);
             DownVideo = new RelayCommand(CheckLink, DownloadVideo);
             DownYTDL = new RelayCommand(DownloadYTDL);
             OpenLink = new RelayCommand(OpenLinkFunction);
         }
 
-        public Data settings = new Data() { };
+        // creating data class
+        
+        public YTDLSettings settings = new YTDLSettings() { };
+
+        // propfulls
 
         private string _logTxt, _linkTxt, _outTxt;
 
@@ -81,6 +87,18 @@ namespace DateCalculator.ViewModel
             }
         }
 
+        // relay commands
+
+        public RelayCommand OpenSettings { get; set; }
+
+        public RelayCommand DownYTDL { get; set; }
+
+        public RelayCommand DownVideo { get; set; }
+
+        public RelayCommand OpenLink { get; set; }
+
+        // relay command functions
+
         private bool CheckLink(object obj)
         {
             // youtube link regex
@@ -103,14 +121,6 @@ namespace DateCalculator.ViewModel
                 return false;
             }
         }
-
-        public RelayCommand OpenSettings { get; set; }
-
-        public RelayCommand DownYTDL { get; set; }
-
-        public RelayCommand DownVideo { get; set; }
-
-        public RelayCommand OpenLink { get; set; }
 
         private void OpenSettingsFolder(object obj)
         {
