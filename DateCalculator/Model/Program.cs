@@ -37,6 +37,7 @@ namespace DateCalculator.Model
             int.TryParse(month, out int MonthParsed);
             int.TryParse(day, out int DayParsed);
 
+            // due to arrays starting at 0
             MonthParsed++; DayParsed++;
             if (MonthParsed < 3) YearParsed--;
             if (YearParsed == 1752 && MonthParsed == 9 && DayParsed >= 3) DayParsed += 11; // fix for sept 1752
@@ -156,6 +157,7 @@ namespace DateCalculator.Model
 
             DayParsed++;
 
+            // has to be 33 not 32 in case of 31st
             if (DayParsed > 0 && DayParsed < 32)
             {
                 return true;
@@ -167,6 +169,7 @@ namespace DateCalculator.Model
         {
             int.TryParse(year, out int yearConverted);
 
+            // true if leap
             if (yearConverted % 4 == 0)
             {
                 return true;
