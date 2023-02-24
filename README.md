@@ -15,4 +15,5 @@ A project to learn more about C#, MVVM and WPF.
 
 ### Releases
 **[v0.1](https://github.com/jack-whatley/DateCalculator/releases/tag/releasev0.1):** Contains just the Date Calculater, only needs .NET Core 3.1 to run.  
-**[v0.2](https://github.com/jack-whatley/DateCalculator/releases/tag/release2):** Contains both the Date Calculator and the YT Downloader, needs all requirements to run.
+**[v0.2](https://github.com/jack-whatley/DateCalculator/releases/tag/release2):** Contains both the Date Calculator and the YT Downloader, needs all requirements to run.  
+**[v0.3](https://github.com/jack-whatley/DateCalculator/releases/tag/releasev0.3):** Updated version of [v0.2](https://github.com/jack-whatley/DateCalculator/releases/tag/release2), see release for changes.
