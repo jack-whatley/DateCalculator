@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Theme/CalOutputTheme.xaml"/>
                 <ResourceDictionary Source="Theme/DayOutputTheme.xaml"/>
                 <ResourceDictionary Source="Theme/InputOutputTheme.xaml"/>
+                <ResourceDictionary Source="Theme/GenericButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewmodel:HomeViewModel}">

@@ -68,6 +68,7 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Margin="0,10,0,0"
+                                Style="{StaticResource GenericButtonTheme}"
                                 Command="{Binding DownVideo}"/>
                         
                         <Button Content="Open Settings"
@@ -77,6 +78,7 @@
                                 VerticalAlignment="Top"
                                 Margin="0,10,0,0"
                                 Command="{Binding OpenSettings}"
+                                Style="{StaticResource GenericButtonTheme}"
                                 Grid.Column="1"/>
 
                         <!-- ytdl use box -->
@@ -118,13 +120,15 @@
                                 VerticalAlignment="Top"
                                 Margin="10,0,0,0"
                                 Grid.Column="1"
-                                Command="{Binding OpenLink}"/>
+                                Command="{Binding OpenLink}"
+                                Style="{StaticResource GenericButtonTheme}"/>
 
                         <TextBlock Text="Opens Github Link"
                                    Grid.Column="1"
                                    VerticalAlignment="Bottom"
                                    Margin="10,0,0,5"
-                                   Foreground="White"/>
+                                   Foreground="White"
+                                   FontSize="11"/>
                     </Grid>
 
                     <TextBlock Text="YTDL Location"
@@ -144,10 +148,11 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Margin="0,0,0,0"
-                                Command="{Binding DownYTDL}"/>
+                                Command="{Binding DownYTDL}"
+                                Style="{StaticResource GenericButtonTheme}"/>
 
                         <TextBlock Foreground="White"
-                                   Text="The download may take a while, however it will always be displayed in the log output. Also functions as an update button."  
+                                   Text="This opens a new CMD window to prevent app freezing."  
                                    FontSize="11"
                                    VerticalAlignment="Top"
                                    Grid.Column="1"
@@ -175,17 +180,18 @@
                            VerticalAlignment="Center"
                            Margin="10,0,0,0"/>
 
-                <ScrollViewer Grid.Row="1"
-                              HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto"
-                              Margin="10,0,10,10"
-                              Padding="5"
-                              Background="Black">
-
-                    <TextBlock Text="{Binding LogText}"
+                <Border Grid.Row="1"
+                        Margin="10,0,10,10"
+                        Padding="5"
+                        Background="Black"
+                        CornerRadius="5">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBlock Text="{Binding LogText}"
                                Foreground="White"
                                TextWrapping="Wrap"/>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </Border>
             </Grid>
         </Border>
     </Grid>

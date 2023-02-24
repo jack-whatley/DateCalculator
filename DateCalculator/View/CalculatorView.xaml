@@ -105,7 +105,8 @@
                                    Foreground="#282828"/>
                         <Button Height="25"
                                 Content="{Binding ButtonText}"
-                                Command="{Binding Submit}"/>
+                                Command="{Binding Submit}"
+                                Style="{StaticResource GenericButtonTheme}"/>
                     </StackPanel>
                 </Grid>
 

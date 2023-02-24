@@ -165,7 +165,6 @@ namespace DateCalculator.ViewModel
                 while (CMD.StandardOutput.ReadLine() != null)
                 {
                     LogText += $"\n{CMD.StandardOutput.ReadLine()}";
-                    Debug.WriteLine(CMD.StandardOutput.ReadLine());
                 }
 
                 while (CMD.StandardError.ReadLine() != null)
@@ -182,7 +181,7 @@ namespace DateCalculator.ViewModel
         private void DownloadYTDL(object obj)
         {
             // downloads latest version of master branch as youtube_dl
-            string PIP = "/C pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl";
+            string PIP = "/K pip install git+https://github.com/ytdl-org/youtube-dl.git@master#egg=youtube_dl";
 
             Process CMD = new Process
             {
@@ -190,33 +189,19 @@ namespace DateCalculator.ViewModel
                 {
                     FileName = "CMD.exe",
                     Arguments = PIP,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Hidden,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    CreateNoWindow = false,
+                    UseShellExecute = true,
                 }
             };
 
             try
             {
                 CMD.Start();
-                CMD.WaitForExit();
+                //CMD.WaitForExit();
 
-                LogText += "[console] pip activated";
-
-                // outputting results
-                while (!CMD.StandardOutput.EndOfStream)
-                {
-                    string Line = CMD.StandardOutput.ReadLine();
-                    LogText += $"\n{Line}";
-                }
-
-                while (!CMD.StandardError.EndOfStream)
-                {
-                    string ErrorLine = CMD.StandardError.ReadLine();
-                    LogText += $"\n{ErrorLine}";
-                }
+                LogText += "[console] pip activated, check cmd window for installation status";
             }
             catch
             {

@@ -6,9 +6,31 @@
         <Style.Setters>
             <Setter Property="Template">
                 <Setter.Value>
-                    
+                    <ControlTemplate TargetType="Button">
+                        <Grid VerticalAlignment="Stretch"
+                              HorizontalAlignment="Stretch">
+                            <Border Background="{TemplateBinding Property=Background}"
+                                    CornerRadius="5"
+                                    Opacity="{TemplateBinding Property=Opacity}">
+                                <TextBlock Text="{TemplateBinding Property=Content}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="Opacity" Value="1" />
         </Style.Setters>
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">    
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
