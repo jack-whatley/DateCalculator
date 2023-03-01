@@ -6,6 +6,11 @@ namespace DateCalculator.ViewModel
 {
     public class TicTacToeViewModel : BaseViewModel
     {
+        public TicTacToeViewModel() 
+        { 
+            
+        }
+
 
     }
 }
