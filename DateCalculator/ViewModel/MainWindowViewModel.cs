@@ -13,6 +13,7 @@ namespace DateCalculator.ViewModel
             HomeVM = new HomeViewModel();
             CalcVM = new CalculatorViewModel();
             DownVM = new DownloadViewModel();
+            TicVM = new TicTacToeViewModel();
 
             CurrentViewModel = HomeVM;
             WindowPathState = "M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z";
@@ -20,6 +21,7 @@ namespace DateCalculator.ViewModel
             HomeViewCommand = new RelayCommand(o => CurrentViewModel = HomeVM);
             CalculatorViewCommand = new RelayCommand(o => CurrentViewModel = CalcVM);
             DownloadViewCommand = new RelayCommand(o => CurrentViewModel = DownVM);
+            TicTacToeCommand = new RelayCommand(o => CurrentViewModel = TicVM);
             CloseApp = new RelayCommand(o => App.Current.Shutdown());
             MinimiseApp = new RelayCommand(o => App.Current.MainWindow.WindowState = WindowState.Minimized);
             // switch between fullscreen and normal size
@@ -42,6 +44,8 @@ namespace DateCalculator.ViewModel
         private static CalculatorViewModel CalcVM { get; set; }
         private static DownloadViewModel DownVM { get; set; }
 
+        private static TicTacToeViewModel TicVM { get; set; }
+
         private BaseViewModel _currentViewModel; 
         
         public BaseViewModel CurrentViewModel 
@@ -60,6 +64,7 @@ namespace DateCalculator.ViewModel
         public RelayCommand HomeViewCommand { get; set; } 
         public RelayCommand CalculatorViewCommand { get; set; } 
         public RelayCommand DownloadViewCommand { get; set; }
+        public RelayCommand TicTacToeCommand { get; set; }
         public RelayCommand CloseApp { get; set; } 
         public RelayCommand MinimiseApp { get; set; } 
         public RelayCommand MaximiseApp { get; set; }

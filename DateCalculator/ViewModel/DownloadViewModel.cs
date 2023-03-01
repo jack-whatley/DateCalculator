@@ -24,7 +24,17 @@ namespace DateCalculator.ViewModel
             if (settings.CheckSettings())
             {
                 string JsonString = File.ReadAllText(settings.app_settings_path);
-                settings = JsonSerializer.Deserialize<YTDLSettings>(JsonString);
+
+                // TODO: better error handling
+                try
+                {
+                    settings = JsonSerializer.Deserialize<YTDLSettings>(JsonString);
+                }
+                catch
+                {
+                    LogText += "[console] settings error, recreating";
+                    settings.CreateSettings();
+                }
             }
             else
             {

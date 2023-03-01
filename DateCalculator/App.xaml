@@ -28,7 +28,11 @@
             <DataTemplate DataType="{x:Type viewmodel:DownloadViewModel}">
                 <view:DownloadView/>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type viewmodel:TicTacToeViewModel}">
+                <view:TicTacToeView/>
+            </DataTemplate>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
