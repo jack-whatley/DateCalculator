@@ -13,6 +13,8 @@ namespace DateCalculator.ViewModel
 {
     class CalculatorViewModel : BaseViewModel
     {
+        // TODO: Fix Submit/Clear Button
+
         public CalculatorViewModel()
         {
             // default button text
@@ -22,10 +24,8 @@ namespace DateCalculator.ViewModel
             Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
-        // propfulls
-        
-        private string[] _dayList; 
-        
+        private string[] _dayList;
+
         private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut, _butText;
 
         public string[] DayList
@@ -77,7 +77,7 @@ namespace DateCalculator.ViewModel
                 OnPropertyChanged(nameof(CalOutput));
             }
         }
-    
+
         public string YearInput
         {
             get { return _yearInp; }
@@ -108,13 +108,45 @@ namespace DateCalculator.ViewModel
             }
         }
 
+        private string _yearSaved, _monthSaved, _daySaved;
+
+        public string YearSaved
+        {
+            get { return _yearSaved; }
+            set 
+            { 
+                _yearSaved = value;
+                OnPropertyChanged(nameof(YearSaved));
+            }
+        }
+
+        public string MonthSaved
+        {
+            get { return _monthSaved; }
+            set
+            {
+                _monthSaved = value;
+                OnPropertyChanged(nameof(MonthSaved));
+            }
+        }
+
+        public string DaySaved
+        {
+            get { return _daySaved; }
+            set
+            {
+                _daySaved = value;
+                OnPropertyChanged(nameof(DaySaved));
+            }
+        }
+
         // update functions
 
         private void OnYearChanged()
-        { 
-            OnPropertyChanged(nameof(YearInput)); 
+        {
+            OnPropertyChanged(nameof(YearInput));
             Submit.RaiseCanExecuteChanged();
-            SetDayList(); 
+            SetDayList();
         }
 
         private void OnMonthChanged()
@@ -126,9 +158,9 @@ namespace DateCalculator.ViewModel
         }
 
         private void OnDayChanged()
-        { 
-            OnPropertyChanged(nameof(DayInput)); 
-            Submit.RaiseCanExecuteChanged(); 
+        {
+            OnPropertyChanged(nameof(DayInput));
+            Submit.RaiseCanExecuteChanged();
         }
 
         // relay commands
@@ -252,9 +284,40 @@ namespace DateCalculator.ViewModel
             CalOutput = "";
         }
 
+        public void SaveInput() 
+        {
+            YearSaved = YearInput;
+            MonthSaved = MonthInput;
+            DaySaved = DayInput;
+        }
+
+        public bool CheckDifference()
+        {
+            if (YearSaved == YearInput)
+            {
+                if (MonthSaved == MonthInput)
+                {
+                    if (DaySaved == DayInput)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public bool CanSubmit(object obj)
         {
-            if (ButtonText == "Clear") return true;
+            // if its the same it clears, else stops clear
+            if (ButtonText == "Clear")
+            {
+                if (CheckDifference()) return true;
+                else
+                {
+                    ButtonText = "Submit";
+                }
+            }
 
             var Program = new InputSanitisationAlgorithms();
 
@@ -279,6 +342,7 @@ namespace DateCalculator.ViewModel
             if (ButtonText == "Submit")
             {
                 SubmitCalendar();
+                SaveInput();
                 ButtonText = "Clear";
             }
             else
