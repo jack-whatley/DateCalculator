@@ -24,6 +24,8 @@ namespace DateCalculator.ViewModel
             Submit = new RelayCommand(CanSubmit, ExecuteSubmit);
         }
 
+        // props
+
         private string[] _dayList;
 
         private string _dayOut, _calOut, _yearInp, _monthInp, _dayInp, _inpOut, _butText;
@@ -163,7 +165,7 @@ namespace DateCalculator.ViewModel
             Submit.RaiseCanExecuteChanged();
         }
 
-        // relay commands
+        // relay command
 
         public RelayCommand Submit { get; set; }
 

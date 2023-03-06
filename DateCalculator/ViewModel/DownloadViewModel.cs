@@ -1,20 +1,15 @@
 ﻿using DateCalculator.Model;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Xml;
 
 namespace DateCalculator.ViewModel
 {
     class DownloadViewModel : BaseViewModel
     {
+        // Example Video: https://www.youtube.com/watch?v=u6JHH8kiyks
+
         public DownloadViewModel()
         {
             // need to set default every time to find paths, can then overwrite if settings are loaded
@@ -55,7 +50,7 @@ namespace DateCalculator.ViewModel
         
         public YTDLSettings settings = new YTDLSettings() { };
 
-        // propfulls
+        // props
 
         private string _logTxt, _linkTxt, _outTxt;
 
@@ -140,7 +135,7 @@ namespace DateCalculator.ViewModel
 
         private void DownloadVideo(object obj)
         {
-            // usage example: python -m youtube_dl -o "~/Desktop/%(title)s.%(ext)s" https://www.youtube.com/watch?v=TGqWphOB9io
+            // usage example: python -m youtube_dl -o "~/Desktop/%(title)s.%(ext)s" https://www.youtube.com/watch?v=u6JHH8kiyks
             string YTDL = "/C python -m youtube_dl";
             string path = $"-o {settings.output_location}";
             string URL = LinkText;
