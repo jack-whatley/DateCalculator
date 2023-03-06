@@ -18,22 +18,67 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Program Layout"
+        <TextBlock Text="Program Guide"
                        Foreground="White"
                        FontSize="28"
                        HorizontalAlignment="Left"
                        Margin="0,0,0,20"/>
 
         <Border CornerRadius="10"
-                BorderThickness="5"
-                BorderBrush="#282828"
+                Background="#282828"
                 VerticalAlignment="Stretch"
                 Grid.Row="1"
-                Margin="0,0,10,10">
-            <StackPanel Background="#282828"
-                        Margin="-1">
+                Margin="0,0,10,5">
+            <Grid Width="Auto"
+                  Height="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
 
-            </StackPanel>
+                <!-- how to use: date calc -->
+                
+                <TextBlock FontSize="18"
+                           Text="Date Calculator"
+                           Foreground="White"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock FontSize="12"
+                           Text="Input a valid date between -9999 and 9999 to get the day of the week in both the Gregorian and Julian calendars. The calendar it uses is the UK one meaning that in September 1752 there will be 12 missing days between the 2nd and 14th. This is because the UK switched calendars in that time."
+                           Foreground="White"
+                           Margin="10"
+                           Grid.Row="1"
+                           TextWrapping="Wrap"/>
+
+                <!-- how to use: yt-dl -->
+
+                <TextBlock FontSize="18"
+                           Text="Youtube-DL Interface"
+                           Foreground="White"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           Grid.Row="2"/>
+
+                <TextBlock FontSize="12"
+                           Text="Input a valid youtube link (checked by regex) to begin the download. This program requires you to have Python 3 and Pip installed as well as using the provided button to install youtube-dl. It installs from the latest release of the master branch to make sure it is always up to date. There is also customisation for the save location as well as an editable settings.json file."
+                           Foreground="White"
+                           Margin="10"
+                           TextWrapping="Wrap"
+                           Grid.Row="3"/>
+
+                <Button Content="View yt-dl Github"
+                        Grid.Row="3"
+                        Padding="5"
+                        Width="120"
+                        Height="25"
+                        Style="{StaticResource GenericButtonTheme}"
+                        HorizontalAlignment="Left"
+                        Margin="10,0,0,0"
+                        Command="{Binding YTDLLink}"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
